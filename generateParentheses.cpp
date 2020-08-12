@@ -14,13 +14,14 @@ public:
             return;
         }
         if (numOfOpen == numberOfPairs) {
-            // only room for close parentheses
+            // only room for close parentheses; example curr = "(((" and numOfOpen=3 numOfPairs=3
             helper(curr + ')', numOfOpen, numOfClosed + 1);
         }
         else {
-            // room for open parentheses
+            // here numOfPairs is bigger than numOfOpen, thus we can insert one more open parentheses
             helper(curr + '(', numOfOpen + 1, numOfClosed);
             if (numOfOpen > numOfClosed) {
+                // if we have more '(' than ')' we can have one more ')'
                 helper(curr + ')', numOfOpen, numOfClosed + 1);
             }
         }
