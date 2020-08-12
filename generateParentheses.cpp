@@ -28,7 +28,7 @@ public:
     vector<string> generateParenthesis(int n) {
         res = new vector<string>;
         numberOfPairs = n;
-        helper("(", 1, 0);  // always must start with open parentheses
+        helper('(', 1, 0);  // always must start with open parentheses
         return *res;
     }
     ~Solution()
