@@ -1,3 +1,5 @@
+#include "bits/stdc++.cpp"
+
 /*
 78. Subsets
 
@@ -12,31 +14,27 @@ class Solution {
 public:
     int n = 0; // size of all numbers
     vector<int>* p = nullptr; // pointer to the input vector
-    vector<vector<int>>* res = nullptr; // resulting pointer of all subsets (power set)
-    
-    // recursive solution (backtracking)
-    void generateVariations(int digitsLeft, char newDigit, vector<int> current) {
-        // digitsLeft - number of elements let to put in one subset
-        // newDigit - '0'(dont put element in this subset) or '1' (put tihs element in this subset)
-        // current - current subset
+    vector<vector<int>> res; // resulting pointer of all subsets (power set)
+    // recursive solution (inorder)
+    void generateVariations(int digitsLeft, bool includeElement, vector<int> current) {
+        // digitsLeft - number of elements left to put in one subset
+        // includeElement - 'false'(dont put element in this subset) or 'true' (put tihs element in this subset)
+        // current - current subset (which is being updated )
+
+        if (includeElement)
+            current.push_back((*p)[n - digitsLeft - 1]); // add new item to the current vector if we need to
         if (digitsLeft == 0) {
-            if (newDigit == '1') current.push_back((*p)[n - 1]); // add last element if '1' is set
-            res->push_back(current);
+            res.push_back(current);
             return;
         }
-        if (newDigit == '1') {
-            // add new item to the current vector
-            current.push_back((*p)[n - digitsLeft - 1]);
-        }
-        generateVariations(digitsLeft-1, '0', current); // left part of subtree (without element)
-        generateVariations(digitsLeft-1, '1', current); // right part of subtree (with element)
+        generateVariations(digitsLeft - 1, false, current); // left part of subtree (without element)
+        generateVariations(digitsLeft - 1, true, current); // right part of subtree (with element)
     }
     vector<vector<int>> subsets(vector<int>& nums) {
         this->n = nums.size();
         this->p = &nums;
-        res = new vector<vector<int>>(); // on heap!
-        generateVariations(n - 1, '0', vector<int>()); // left part of backtracking tree
-        generateVariations(n - 1, '1', vector<int>()); // right part of backtracking tree
-        return *res;
+        generateVariations(n - 1, false, vector<int>()); // left part of tree
+        generateVariations(n - 1, true, vector<int>()); // right part of  tree
+        return res;
     }
 };
